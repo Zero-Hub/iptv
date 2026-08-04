@@ -61,13 +61,6 @@ https://raw.githubusercontent.com/Zero-Hub/iptv/refs/heads/main/live.txt
 - [加速链接](https://gh-proxy.com/raw.githubusercontent.com/Zero-Hub/iptv/refs/heads/main/live_20260804_154114.txt)
 - [原始 Raw 链接](https://raw.githubusercontent.com/Zero-Hub/iptv/refs/heads/main/live_20260804_154114.txt)
 
-### `live_20260804_160436.txt`
-
-- 创建时间：2026-08-04 16:04:36（Asia/Shanghai，北京时间，UTC+8）
-- 频道总数：581
-- [GitHub 文件链接](https://github.com/Zero-Hub/iptv/blob/main/live_20260804_160436.txt)
-- [加速链接](https://gh-proxy.com/raw.githubusercontent.com/Zero-Hub/iptv/refs/heads/main/live_20260804_160436.txt)
-- [原始 Raw 链接](https://raw.githubusercontent.com/Zero-Hub/iptv/refs/heads/main/live_20260804_160436.txt)
 
 ## 使用说明
 
