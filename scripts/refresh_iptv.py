@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import re
-import urllib.parse
 import urllib.request
 from collections import OrderedDict
 from datetime import datetime
@@ -23,7 +22,7 @@ def post_form(url: str, fields: dict[str, str]) -> dict:
     body = bytearray()
     for key, value in fields.items():
         body.extend(f"--{boundary}\r\n".encode())
-        body.extend(f"Content-Disposition: form-data; name=\"{key}\"\r\n\r\n".encode())
+        body.extend(f'Content-Disposition: form-data; name="{key}"\r\n\r\n'.encode())
         body.extend(value.encode("utf-8"))
         body.extend(b"\r\n")
     body.extend(f"--{boundary}--\r\n".encode())
@@ -32,7 +31,7 @@ def post_form(url: str, fields: dict[str, str]) -> dict:
         data=bytes(body),
         headers={
             "Content-Type": f"multipart/form-data; boundary={boundary}",
-            "User-Agent": "Mozilla/5.0 TVBox-Refresh-Agent/1.0",
+            "User-Agent": "Mozilla/5.0 TVBox-Refresh-Agent/1.1",
         },
         method="POST",
     )
@@ -41,20 +40,19 @@ def post_form(url: str, fields: dict[str, str]) -> dict:
 
 
 def canonical_group(name: str) -> str:
-    mapping = {
-        "中数传媒": "数字频道",
-        "轮播": "轮播频道",
-    }
-    return mapping.get(name.strip(), name.strip() or "其他频道")
+    return {"中数传媒": "数字频道", "轮播": "轮播频道"}.get(
+        name.strip(), name.strip() or "其他频道"
+    )
 
 
 def clean_txt(text: str):
-    groups: OrderedDict[str, list[tuple[str, str]]] = OrderedDict()
+    # TVBox TXT parser groups multiple lines by channel name, but some forks only
+    # keep the final duplicate line. Emit one line per channel and join routes
+    # with #, which is explicitly supported by TVBox TxtSubscribe.parseTxt().
+    groups: OrderedDict[str, OrderedDict[str, list[str]]] = OrderedDict()
     current = "其他频道"
-    seen: set[str] = set()
-    duplicate_count = 0
-    invalid_count = 0
-    skipped_count = 0
+    seen_urls: set[str] = set()
+    duplicate_count = invalid_count = skipped_count = 0
 
     for raw_line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
         line = raw_line.replace("\ufeff", "").strip()
@@ -62,7 +60,7 @@ def clean_txt(text: str):
             continue
         if line.endswith(",#genre#"):
             current = canonical_group(line[:-8])
-            groups.setdefault(current, [])
+            groups.setdefault(current, OrderedDict())
             continue
         if SKIP_GROUP.search(current):
             skipped_count += 1
@@ -72,28 +70,47 @@ def clean_txt(text: str):
             invalid_count += 1
             continue
         name, url = line.split(",", 1)
-        name = name.strip()
-        url = url.strip().strip("<>")
+        name, url = name.strip(), url.strip().strip("<>")
         if not name or not VALID_URL.match(url):
             invalid_count += 1
             continue
-        if url in seen:
+        if url in seen_urls:
             duplicate_count += 1
             continue
-        seen.add(url)
-        groups.setdefault(current, []).append((name, url))
+        seen_urls.add(url)
+        channels = groups.setdefault(current, OrderedDict())
+        channels.setdefault(name, []).append(url)
 
-    groups = OrderedDict((group, items) for group, items in groups.items() if items)
+    groups = OrderedDict(
+        (group, channels) for group, channels in groups.items() if channels
+    )
     lines: list[str] = []
-    for group, items in groups.items():
+    for group, channels in groups.items():
         lines.append(f"{group},#genre#")
-        lines.extend(f"{name},{url}" for name, url in items)
-    return "\n".join(lines) + "\n", groups, duplicate_count, invalid_count, skipped_count
+        lines.extend(f"{name},{'#'.join(urls)}" for name, urls in channels.items())
+
+    route_count = sum(len(urls) for channels in groups.values() for urls in channels.values())
+    channel_count = sum(len(channels) for channels in groups.values())
+    multi_channel_count = sum(
+        1 for channels in groups.values() for urls in channels.values() if len(urls) > 1
+    )
+    return (
+        "\n".join(lines) + "\n",
+        groups,
+        channel_count,
+        route_count,
+        multi_channel_count,
+        duplicate_count,
+        invalid_count,
+        skipped_count,
+    )
 
 
-def build_auto_readme(groups, updated_at: str) -> str:
-    total = sum(len(items) for items in groups.values())
-    table = "\n".join(f"| {group} | {len(items)} |" for group, items in groups.items())
+def build_auto_readme(groups, channel_count: int, route_count: int, updated_at: str) -> str:
+    table = "\n".join(
+        f"| {group} | {len(channels)} | {sum(len(urls) for urls in channels.values())} |"
+        for group, channels in groups.items()
+    )
     return f"""<!-- IPTV-AUTO-START -->
 # TVBox 直播源
 
@@ -119,11 +136,11 @@ def build_auto_readme(groups, updated_at: str) -> str:
 
 ```json
 {{
-  \"lives\": [
+  "lives": [
     {{
-      \"name\": \"Zero IPTV\",
-      \"type\": 0,
-      \"url\": \"{ACCEL}\"
+      "name": "Zero IPTV",
+      "type": 0,
+      "url": "{ACCEL}"
     }}
   ]
 }}
@@ -131,17 +148,20 @@ def build_auto_readme(groups, updated_at: str) -> str:
 
 ## 直播源概况
 
-- 当前频道总数：**{total}**
+- 当前频道数：**{channel_count}**
+- 可选线路总数：**{route_count}**
 - 频道分类数：**{len(groups)}**
 - 最后更新时间：**{updated_at}（北京时间，UTC+8）**
 - 数据来源：`{SOURCE}`
 
+同一频道的多个播放地址已合并到同一行，并使用 `#` 分隔，以便不同 TVBox 分支正确显示和切换线路。
+
 ## 频道分类统计
 
-| 分类 | 频道数 |
-|---|---:|
+| 分类 | 频道数 | 线路数 |
+|---|---:|---:|
 {table}
-| **合计** | **{total}** |
+| **合计** | **{channel_count}** | **{route_count}** |
 
 ## 使用说明
 
@@ -158,7 +178,7 @@ def build_auto_readme(groups, updated_at: str) -> str:
 def main() -> None:
     fetched = post_form(CONVERTER + "?action=fetch", {"source": SOURCE})
     if not fetched.get("success") or not fetched.get("data"):
-        raise RuntimeError(f"订阅读取/解密失败：{fetched.get(error, 无数据)}")
+        raise RuntimeError(f"订阅读取/解密失败：{fetched.get('error', '无数据')}")
 
     converted = post_form(
         CONVERTER + "?action=convert",
@@ -171,29 +191,48 @@ def main() -> None:
         },
     )
     if not converted.get("success") or not converted.get("output"):
-        raise RuntimeError(f"转 TXT 失败：{converted.get(error, 无数据)}")
+        raise RuntimeError(f"转 TXT 失败：{converted.get('error', '无数据')}")
 
-    live, groups, duplicates, invalid, skipped = clean_txt(converted["output"])
-    if not groups or sum(len(items) for items in groups.values()) < 10:
-        raise RuntimeError("清洗后的频道数量异常，拒绝覆盖 live.txt")
+    (
+        live,
+        groups,
+        channel_count,
+        route_count,
+        multi_channel_count,
+        duplicates,
+        invalid,
+        skipped,
+    ) = clean_txt(converted["output"])
+    if channel_count < 10 or route_count < channel_count:
+        raise RuntimeError("清洗后的频道或线路数量异常，拒绝覆盖 live.txt")
 
     Path("live.txt").write_text(live, encoding="utf-8", newline="\n")
     now = datetime.now(ZoneInfo("Asia/Shanghai")).strftime("%Y-%m-%d %H:%M:%S")
-    auto = build_auto_readme(groups, now)
+    auto = build_auto_readme(groups, channel_count, route_count, now)
     readme_path = Path("README.md")
     old = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     new = AUTO_RE.sub(auto, old, count=1) if AUTO_RE.search(old) else auto + ("\n\n" + old if old else "\n")
     readme_path.write_text(new, encoding="utf-8", newline="\n")
 
     summary = {
-        "channels": sum(len(items) for items in groups.values()),
-        "groups": {group: len(items) for group, items in groups.items()},
+        "channels": channel_count,
+        "routes": route_count,
+        "multi_route_channels": multi_channel_count,
+        "groups": {
+            group: {
+                "channels": len(channels),
+                "routes": sum(len(urls) for urls in channels.values()),
+            }
+            for group, channels in groups.items()
+        },
         "duplicates_removed": duplicates,
         "invalid_skipped": invalid,
         "promotional_skipped": skipped,
         "updated_at": now,
     }
-    Path("refresh-result.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    Path("refresh-result.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 
