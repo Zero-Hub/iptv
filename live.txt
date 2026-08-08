@@ -32,6 +32,13 @@ CCTV4,http://112.123.243.37:50085/tsfile/live/0004_1.m3u8?key=txiptv
 CCTV4,http://223.78.65.165:9901/tsfile/live/0004_1.m3u8?key=txiptv
 CCTV4,http://yjj888.f3322.net:9901/tsfile/live/0004_1.m3u8?key=txiptv
 CCTV4,http://221.232.199.54:7777/tsfile/live/1043_1.m3u8?key=txiptv
+CCTV4亚洲,http://69.30.245.50/live/cctv4.m3u8
+CCTV4亚洲,http://173.208.212.130:8181/720p/cctv4.m3u8
+CCTV4亚洲,http://139.227.221.250:9901/tsfile/live/0004_1.m3u8?key=txiptv
+CCTV4亚洲,http://112.123.243.37:50085/tsfile/live/0004_1.m3u8?key=txiptv
+CCTV4亚洲,http://223.78.65.165:9901/tsfile/live/0004_1.m3u8?key=txiptv
+CCTV4亚洲,http://yjj888.f3322.net:9901/tsfile/live/0004_1.m3u8?key=txiptv
+CCTV4亚洲,http://221.232.199.54:7777/tsfile/live/1043_1.m3u8?key=txiptv
 CCTV5,http://69.30.245.50/live/cctv5.m3u8
 CCTV5,http://173.208.212.130:8181/720p/cctv5.m3u8
 CCTV5,http://139.227.221.250:9901/tsfile/live/0005_1.m3u8?key=txiptv
@@ -133,6 +140,7 @@ CCTV17,http://173.208.212.130:8181/720p/cctv17.m3u8
 CCTV17,http://221.232.199.54:7777/tsfile/live/1073_1.m3u8?key=txiptv
 CCTV17,http://61.178.227.57:9901/tsfile/live/0142_1.m3u8?key=txiptv
 CCTV卫生健康,http://173.208.212.130:8181/720p/wsjk.m3u8
+
 卫视频道,#genre#
 东方卫视,http://69.30.246.194/live/dfws.m3u8
 东方卫视,http://173.208.212.130:8181/720p/dfws.m3u8
@@ -186,7 +194,8 @@ CCTV卫生健康,http://173.208.212.130:8181/720p/wsjk.m3u8
 湖南卫视,http://223.78.65.165:9901/tsfile/live/0016_1.m3u8?key=txiptv
 湖南卫视,http://221.232.199.54:7777/tsfile/live/1060_1.m3u8?key=txiptv
 湖南卫视,http://61.178.227.57:9901/tsfile/live/0128_1.m3u8?key=txiptv
-数字频道,#genre#
+
+中数传媒,#genre#
 CHC动作电影,http://69.30.245.50/live/chcdz.m3u8
 CHC家庭影院,http://69.30.245.50/live/chcjt.m3u8
 CHC影迷电影,http://69.30.245.50/live/chcym.m3u8
@@ -201,6 +210,7 @@ CHC影迷电影,http://69.30.245.50/live/chcym.m3u8
 风云足球,http://173.208.212.130:8181/720p/fyzq.m3u8
 风云足球,http://61.178.227.57:9901/tsfile/live/1017_1.m3u8?key=txiptv
 风云音乐,http://173.208.212.130:8181/720p/fyyy.m3u8
+
 IPTV,#genre#
 睛彩广场舞,http://gslbserv.itv.cmvideo.cn:80/3000000020000011523/index.m3u8?channel-id=FifastbLive&Contentid=3000000020000011523&livemode=1&stbId=YanG-1989
 睛彩广场舞,http://gslbserv.itv.cmvideo.cn:80/3000000020000011523/index.m3u8?channel-id=FifastbLive&Contentid=3000000020000011523&livemode=1&stbId=BingCha
@@ -210,6 +220,10 @@ IPTV,#genre#
 睛彩篮球,http://gslbserv.itv.cmvideo.cn:80/3000000020000011529/index.m3u8?channel-id=FifastbLive&Contentid=3000000020000011529&livemode=1&stbId=BingCha
 睛彩青少,http://gslbserv.itv.cmvideo.cn:80/3000000020000011525/index.m3u8?channel-id=FifastbLive&Contentid=3000000020000011525&livemode=1&stbId=YanG-1989
 睛彩青少,http://gslbserv.itv.cmvideo.cn:80/3000000020000011525/index.m3u8?channel-id=FifastbLive&Contentid=3000000020000011525&livemode=1&stbId=BingCha
+
+进QQ群,#genre#
+QQ群号：176895442,https://gongdian.top/tv/iptv/tv.mp4
+
 咪视界,#genre#
 咪视界1,http://gslbserv.itv.cmvideo.cn:80/3000000001000005308/index.m3u8?channel-id=FifastbLive&Contentid=3000000001000005308&livemode=1&stbId=YanG-1989
 咪视界1,http://gslbserv.itv.cmvideo.cn:80/3000000001000005308/index.m3u8?channel-id=FifastbLive&Contentid=3000000001000005308&livemode=1&stbId=BingCha
@@ -291,6 +305,7 @@ IPTV,#genre#
 咪视界8,http://gslbserv.itv.cmvideo.cn:80/3000000001000010948/index.m3u8?channel-id=FifastbLive&Contentid=3000000001000010948&livemode=1&stbId=BingCha
 咪视界9,http://gslbserv.itv.cmvideo.cn:80/3000000001000028638/index.m3u8?channel-id=FifastbLive&Contentid=3000000001000028638&livemode=1&stbId=YanG-1989
 咪视界9,http://gslbserv.itv.cmvideo.cn:80/3000000001000028638/index.m3u8?channel-id=FifastbLive&Contentid=3000000001000028638&livemode=1&stbId=BingCha
+
 历年春晚,#genre#
 春晚1983,https://alimov2.a.kwimgs.com/upic/2022/01/31/15/BMjAyMjAxMzExNTU5MTRfNDAzMDAxOTlfNjYyNzMxNjcwMjBfMF8z_b_Beb3bda599f76c60c463c433ca7460153.mp4
 春晚1984,https://alimov2.a.kwimgs.com/upic/2022/01/31/15/BMjAyMjAxMzExNTU5NTRfNDAzMDAxOTlfNjYyNzMyMzg3MTRfMF8z_b_B192356dadbc90d207ba16964d4c2914c.mp4
@@ -333,6 +348,7 @@ IPTV,#genre#
 春晚2016,https://cdn8.yzzy-online.com/20220704/577_cda9c8d1/1000k/hls/index.m3u8
 春晚2017,https://alimov2.a.kwimgs.com/upic/2023/01/13/20/BMjAyMzAxMTMyMDA5MjJfNDAzMDAxOTlfOTM0OTkwNDQ2NDhfMF8z_b_B6527b0c2ce3dda1d9b3f34edd4fdb9aa.mp4
 春晚2018,https://alimov2.a.kwimgs.com/upic/2023/01/06/16/BMjAyMzAxMDYxNjMxMTRfNDAzMDAxOTlfOTI4OTY2ODE2MTBfMF8z_b_B11a778e34390a21de42d407e94f45b91.mp4
+春晚2019,https://alimov2.a.kwimgs.com/upic/2023/01/06/16/BMjAyMzAxMDYxNjMxMTRfNDAzMDAxOTlfOTI4OTY2ODE2MTBfMF8z_b_B11a778e34390a21de42d407e94f45b91.mp4
 春晚2020,https://alimov2.a.kwimgs.com/upic/2022/01/30/17/BMjAyMjAxMzAxNzA5NDdfNDAzMDAxOTlfNjYxNzQ2MDAyMTFfMF8z_b_B5d51d9564c5670dc66faeba20aa7af3f.mp4
 春晚2021,https://alimov2.a.kwimgs.com/upic/2022/01/30/17/BMjAyMjAxMzAxNzE4NTJfNDAzMDAxOTlfNjYxNzUzOTg3NjlfMF8z_b_Be41d9503181d7b0608a839ed401e02c2.mp4
 春晚2022,https://alimov2.a.kwimgs.com/upic/2022/02/01/11/BMjAyMjAyMDExMTEwMjNfNDAzMDAxOTlfNjYzNzA4MTk4NzNfMF8z_b_B898cc7ddd0025bf54ddb18ec1f723c84.mp4
@@ -341,7 +357,8 @@ IPTV,#genre#
 春晚2025,https://res.cctvnews.cctv.com/video/3005/record/cctv/merge1/133396667284143308839013005/8fbd6180bdef4da19f6155cf6b4652e1-4.m3u8
 春晚2025,https://svip.high24-playback.com/20250129/17159_7bca93c4/2000k/hls/mixed.m3u8
 春晚2025,https://svipsvip.ffzyread1.com/20250129/35458_c988286f/index.m3u8
-轮播频道,#genre#
+
+轮播,#genre#
 周星驰,http://107.150.60.122/live/lbzxc.m3u8
 周润发,http://63.141.230.178:82/gslb/zbdq5.m3u8?id=lbzrf
 周润发,http://107.150.60.122/live/lbzrf.m3u8
