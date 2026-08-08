@@ -38,7 +38,7 @@ https://raw.githubusercontent.com/Zero-Hub/iptv/refs/heads/main/live.txt
 - 当前频道数：**137**
 - 可选线路总数：**348**
 - 频道分类数：**7**
-- 最后更新时间：**2026-08-08 15:07:14（北京时间，UTC+8）**
+- 最后更新时间：**2026-08-08 15:12:49（北京时间，UTC+8）**
 - 数据来源：`https://gongdian.top/tv/iptv`
 
 同一频道的多个播放地址已合并到同一行，并使用 `#` 分隔，以便不同 TVBox 分支正确显示和切换线路。
